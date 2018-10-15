@@ -55,7 +55,7 @@ void ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const
 	FVector WorldDirection;
 	DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, WorldLocation, WorldDirection);
 	GetLookVectorHitLocation(WorldDirection, HitLocation);
-	UE_LOG(LogTemp, Warning, TEXT("Looking at %s"), *HitLocation.ToString());
+	Cast<ATank>(GetPawn())->AimAt(HitLocation);
 
 
 }

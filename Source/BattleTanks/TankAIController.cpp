@@ -4,6 +4,7 @@
 
 void ATankAIController::BeginPlay()
 {
+	Super::BeginPlay();
 	if (GetPlayerControlledTank())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Found player controlled pawn: %s."), *GetPlayerControlledTank()->GetName());
@@ -17,6 +18,7 @@ void ATankAIController::BeginPlay()
 void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	Cast<ATank>(GetPawn())->AimAt(GetPlayerControlledTank()->GetActorLocation());
 }
 
 ATank* ATankAIController::GetPlayerControlledTank()
