@@ -51,7 +51,12 @@ void UTankAimingComponent::AimAt(FVector AimLocation, float LaunchSpeed)
 		ESuggestProjVelocityTraceOption::DoNotTrace
 	))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Tank's aiming direction is %s"), *OutLaunchVelocity.GetSafeNormal().ToString());
+		//UE_LOG(LogTemp, Warning, TEXT("Tank's aiming direction is %s"), *OutLaunchVelocity.GetSafeNormal().ToString());
+		MoveBarrel(OutLaunchVelocity.GetSafeNormal());
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Can't calculate aiming direction"));
 	}
 
 }
@@ -66,6 +71,7 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
-	Barrel->Elevate(5.f);
+	UE_LOG(LogTemp, Warning, TEXT("Elevating barrel"));
+	Barrel->Elevate(1);
 }
 
