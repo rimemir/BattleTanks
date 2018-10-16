@@ -3,6 +3,7 @@
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
+#include "GenericPlatform/GenericPlatformMath.h"
 
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
@@ -78,7 +79,6 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAtRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAtRotator - BarrelRotator;
-	UE_LOG(LogTemp, Warning, TEXT("Elevating barrel"));
 	Barrel->Elevate(DeltaRotator.Pitch);
 }
 
@@ -86,8 +86,8 @@ void UTankAimingComponent::MoveTurret(FVector AimDirection)
 {
 	auto TurretRotator = Turret->GetForwardVector().Rotation();
 	auto AimAtRotator = AimDirection.Rotation();
-	auto DeltaRotator = AimAtRotator - TurretRotator;
-	UE_LOG(LogTemp, Warning, TEXT("Elevating barrel"));
-	Turret->RotateTurret(DeltaRotator.Yaw);
+	auto DeltaYaw = AimAtRotator.Yaw - TurretRotator.Yaw;
+	if (FGenericPlatformMath::Abs(DeltaYaw) > 180) DeltaYaw = -DeltaYaw;
+	UE_LOG(LogTemp, Warning, TEXT("Rotating turret by %f"), DeltaYaw);
+	Turret->RotateTurret(DeltaYaw);
 }
-
