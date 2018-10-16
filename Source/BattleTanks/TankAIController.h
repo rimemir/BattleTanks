@@ -23,7 +23,9 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	ATank* GetPlayerControlledTank();
-	
+
+	ATank* ControlledTank = nullptr;
+	ATank* PlayerControlledTank = nullptr;
+
 
 };

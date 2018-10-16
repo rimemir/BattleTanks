@@ -5,23 +5,30 @@
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	if (GetPlayerControlledTank())
+
+	ControlledTank = Cast<ATank>(GetPawn());
+	PlayerControlledTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
+
+	if (PlayerControlledTank)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Found player controlled pawn: %s."), *GetPlayerControlledTank()->GetName());
+		UE_LOG(LogTemp, Warning, TEXT("Found player controlled pawn: %s."), *PlayerControlledTank->GetName());
 	}
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Didn't find player controlled pawn.") );
 	}
+
 }
 
 void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	Cast<ATank>(GetPawn())->AimAt(GetPlayerControlledTank()->GetActorLocation());
-}
 
-ATank* ATankAIController::GetPlayerControlledTank()
-{
-	return Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	if (ControlledTank)
+	{
+		ControlledTank->AimAt(PlayerControlledTank->GetActorLocation());
+		ControlledTank->Fire();
+	}
+
+	
 }
