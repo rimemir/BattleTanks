@@ -37,14 +37,10 @@ void ATankPlayerController::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("Possesing nothing"));
 	}
 
-
-
 }
 
 void ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const
 {
-	HitLocation = FVector(1.0);
-
 	int32 ViewportX = 0;
 	int32 ViewportY = 0;
 	GetViewportSize(ViewportX, ViewportY);
@@ -54,9 +50,10 @@ void ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const
 	FVector WorldLocation;
 	FVector WorldDirection;
 	DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, WorldLocation, WorldDirection);
-	GetLookVectorHitLocation(WorldDirection, HitLocation);
-	Cast<ATank>(GetPawn())->AimAt(HitLocation);
-
+	if (GetLookVectorHitLocation(WorldDirection, HitLocation))
+	{
+		Cast<ATank>(GetPawn())->AimAt(HitLocation);
+	}
 
 }
 

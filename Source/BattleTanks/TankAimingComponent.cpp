@@ -88,6 +88,5 @@ void UTankAimingComponent::MoveTurret(FVector AimDirection)
 	auto AimAtRotator = AimDirection.Rotation();
 	auto DeltaYaw = AimAtRotator.Yaw - TurretRotator.Yaw;
 	if (FGenericPlatformMath::Abs(DeltaYaw) > 180) DeltaYaw = -DeltaYaw;
-	UE_LOG(LogTemp, Warning, TEXT("Rotating turret by %f"), DeltaYaw);
 	Turret->RotateTurret(DeltaYaw);
 }
