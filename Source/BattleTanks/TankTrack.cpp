@@ -5,11 +5,11 @@
 
 void UTankTrack::SetThrottle(float Throttle)
 {
-	//float TankZPosition = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent())->GetComponentLocation().Z;
-	//TankZPosition = FMath::Clamp(TankZPosition, 0.f, 100.f);
-
-	FVector ForceVector = GetForwardVector()*Throttle*TrackMaxDrivingForce;
-	Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent())->AddForceAtLocation(ForceVector, GetComponentLocation());
-	UE_LOG(LogTemp, Warning, TEXT("Adding force %s to %s"), *ForceVector.ToString(), *Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent())->GetName());
+	float TankZPosition = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent())->GetComponentLocation().Z;
+	constexpr float MAX_HOVER_HEIGHT = 300.f;
+	TankZPosition = FMath::Clamp(TankZPosition, 0.f, MAX_HOVER_HEIGHT);
+	FVector ForceVector = GetUpVector()*Throttle*TrackMaxDrivingForce*(1.f - TankZPosition/MAX_HOVER_HEIGHT);
+	Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent())->AddForceAtLocation(ForceVector, GetComponentLocation() - FVector(200.f, 0.f, 0.f));
+	Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent())->AddForceAtLocation(ForceVector, GetComponentLocation() + FVector(200.f, 0.f, 0.f));
+	UE_LOG(LogTemp, Warning, TEXT("Adding force %s to %s with Z position %f"), *ForceVector.ToString(), *Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent())->GetName(), TankZPosition);
 }
-
