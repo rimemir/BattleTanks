@@ -23,6 +23,7 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 	
 public:
+	UFUNCTION(BlueprintCallable)
 	ATank* GetTank() const;
 	
 	void AimTowardsCrosshair() const;
