@@ -19,4 +19,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void IntendMoveForward(float Throw);
 	
+	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
+
 };

@@ -34,4 +34,9 @@ void AProjectile::LaunchProjectile(float ProjectileSpeed)
 	UE_LOG(LogTemp, Warning, TEXT("%f: Boom!"), TimeStamp);
 	ProjectileMovementComponent->SetVelocityInLocalSpace(FVector::ForwardVector*ProjectileSpeed);
 	ProjectileMovementComponent->Activate();
+
+	
+
+	FVector ForceVector = GetRootComponent()->GetForwardVector()*ProjectileSpeed*10000;
+	Cast<UPrimitiveComponent>(GetRootComponent())->AddForceAtLocation(ForceVector, GetRootComponent()->GetComponentLocation());
 }

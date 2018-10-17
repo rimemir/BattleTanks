@@ -67,6 +67,8 @@ void ATank::Fire()
 			Barrel->GetSocketRotation(FName("Projectile"))
 			);
 
+		//Projectile->SetActorRotation(Barrel->GetComponentRotation());
+
 		Projectile->LaunchProjectile(LaunchSpeed);
 		LastFireTime = FPlatformTime::Seconds();
 	}
