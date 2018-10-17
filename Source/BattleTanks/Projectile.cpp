@@ -37,6 +37,6 @@ void AProjectile::LaunchProjectile(float ProjectileSpeed)
 
 	
 
-	FVector ForceVector = GetRootComponent()->GetForwardVector()*ProjectileSpeed*10000;
+	FVector ForceVector = GetRootComponent()->GetForwardVector()*ProjectileSpeed*ForceOfLaunch;
 	Cast<UPrimitiveComponent>(GetRootComponent())->AddForceAtLocation(ForceVector, GetRootComponent()->GetComponentLocation());
 }

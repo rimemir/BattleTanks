@@ -31,5 +31,6 @@ private:
 
 	UProjectileMovementComponent* ProjectileMovementComponent = nullptr;
 	
-	
+	UPROPERTY(EditDefaultsOnly)
+	float ForceOfLaunch = 100000.f;
 };
