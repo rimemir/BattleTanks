@@ -16,7 +16,8 @@ enum class EFiringState : uint8
 {
 	Reloading,
 	Aiming,
-	Locked
+	Locked,
+	OutOfAmmo
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -33,9 +34,14 @@ public:
 
 	bool TurretIsLocked();
 
+	UPROPERTY(BlueprintReadOnly)
+	int32 AmmoCount = 3;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+
+
 
 public:	
 	// Called every frame
@@ -59,5 +65,8 @@ private:
 
 	bool bBarrelLocked = true;
 	bool bTurretLocked = true;
+
+
 	
+
 };

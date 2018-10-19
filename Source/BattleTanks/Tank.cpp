@@ -38,19 +38,27 @@ void ATank::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	bool bIsReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
-	if (!bIsReloaded)
+	if (!(TankAimingComponent->FiringState == EFiringState::OutOfAmmo))
 	{
-		TankAimingComponent->FiringState = EFiringState::Reloading;
-	}
-	else if (TankAimingComponent->TurretIsLocked())
-	{
-		TankAimingComponent->FiringState = EFiringState::Locked;
-	}
-	else
-	{
-		TankAimingComponent->FiringState = EFiringState::Aiming;
+		if (!bIsReloaded)
+		{
+			TankAimingComponent->FiringState = EFiringState::Reloading;
+		}
+		else if (TankAimingComponent->TurretIsLocked())
+		{
+			TankAimingComponent->FiringState = EFiringState::Locked;
+		}
+		else
+		{
+			TankAimingComponent->FiringState = EFiringState::Aiming;
+		}
 	}
 	
+}
+
+UTankAimingComponent* ATank::GetTankAimingComponent() const
+{
+	return TankAimingComponent;
 }
 
 // Called to bind functionality to input
@@ -73,7 +81,7 @@ void ATank::SetTurretReference(UTankTurret* TurretToSet)
 
 void ATank::Fire()
 {
-	if (TankAimingComponent->FiringState != EFiringState::Reloading)
+	if (TankAimingComponent->FiringState != EFiringState::Reloading && TankAimingComponent->FiringState != EFiringState::OutOfAmmo)
 	{
 		AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,
@@ -81,12 +89,13 @@ void ATank::Fire()
 			Barrel->GetSocketRotation(FName("Projectile"))
 			);
 
-		//Projectile->SetActorRotation(Barrel->GetComponentRotation());
-
 		Projectile->LaunchProjectile(LaunchSpeed);
 		LastFireTime = FPlatformTime::Seconds();
+		if (--TankAimingComponent->AmmoCount <= 0)
+		{
+			TankAimingComponent->FiringState = EFiringState::OutOfAmmo;
+		}
 	}
-
 
 
 }

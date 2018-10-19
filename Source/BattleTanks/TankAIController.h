@@ -22,12 +22,14 @@ protected:
 
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(EditAnywhere)
+	float AcceptanceRadius = 3000.f;
+
 private:
 
 	ATank* ControlledTank = nullptr;
 	ATank* PlayerControlledTank = nullptr;
 
-	UPROPERTY(EditAnywhere)
-	float AcceptanceRadius = 3000.f;
+
 
 };
