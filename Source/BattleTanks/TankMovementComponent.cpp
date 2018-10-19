@@ -32,7 +32,6 @@ void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, boo
 	IntendMoveForward(MoveIntensity);
 	
 	float RotateIntensity = FVector::CrossProduct(TankFacingDirection, IntendedMoveDirection).Z;
-	UE_LOG(LogTemp, Warning, TEXT("Rotating with intensity %f"), RotateIntensity)
 	IntendTurnRight(RotateIntensity);
 
 }

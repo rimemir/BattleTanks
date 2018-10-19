@@ -27,7 +27,9 @@ void ATank::AimAt(FVector AimLocation)
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	LastFireTime = FPlatformTime::Seconds();
+
+
 }
 
 // Called every frame
@@ -35,6 +37,20 @@ void ATank::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	bool bIsReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
+	if (!bIsReloaded)
+	{
+		TankAimingComponent->FiringState = EFiringState::Reloading;
+	}
+	else if (TankAimingComponent->TurretIsLocked())
+	{
+		TankAimingComponent->FiringState = EFiringState::Locked;
+	}
+	else
+	{
+		TankAimingComponent->FiringState = EFiringState::Aiming;
+	}
+	
 }
 
 // Called to bind functionality to input
@@ -57,9 +73,7 @@ void ATank::SetTurretReference(UTankTurret* TurretToSet)
 
 void ATank::Fire()
 {
-
-	bool bIsReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
-	if (bIsReloaded)
+	if (TankAimingComponent->FiringState != EFiringState::Reloading)
 	{
 		AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,
@@ -72,4 +86,7 @@ void ATank::Fire()
 		Projectile->LaunchProjectile(LaunchSpeed);
 		LastFireTime = FPlatformTime::Seconds();
 	}
+
+
+
 }

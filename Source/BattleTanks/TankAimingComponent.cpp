@@ -79,7 +79,16 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAtRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAtRotator - BarrelRotator;
+	if (FGenericPlatformMath::Abs(DeltaRotator.Pitch) < 0.1f)
+	{
+		bBarrelLocked = true;
+	}
+	else
+	{
+		bBarrelLocked = false;
+	}
 	Barrel->Elevate(DeltaRotator.Pitch);
+
 }
 
 void UTankAimingComponent::MoveTurret(FVector AimDirection)
@@ -88,5 +97,18 @@ void UTankAimingComponent::MoveTurret(FVector AimDirection)
 	auto AimAtRotator = AimDirection.Rotation();
 	auto DeltaYaw = AimAtRotator.Yaw - TurretRotator.Yaw;
 	if (FGenericPlatformMath::Abs(DeltaYaw) > 180) DeltaYaw = -DeltaYaw;
+	if (FGenericPlatformMath::Abs(DeltaYaw) < 0.1f)
+	{
+		bTurretLocked = true;
+	}
+	else
+	{
+		bTurretLocked = false;
+	}
 	Turret->RotateTurret(DeltaYaw);
+}
+
+bool UTankAimingComponent::TurretIsLocked()
+{
+	return (bBarrelLocked && bTurretLocked);
 }

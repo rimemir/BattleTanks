@@ -28,12 +28,14 @@ public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 
+	UPROPERTY(BlueprintReadOnly)
+	EFiringState FiringState = EFiringState::Locked;
+
+	bool TurretIsLocked();
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-
-	UPROPERTY(BlueprintReadOnly)
-	EFiringState FiringState = EFiringState::Reloading;
 
 public:	
 	// Called every frame
@@ -55,6 +57,7 @@ private:
 
 	void MoveTurret(FVector AimDirection);
 
-
+	bool bBarrelLocked = true;
+	bool bTurretLocked = true;
 	
 };
